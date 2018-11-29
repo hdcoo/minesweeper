@@ -28,6 +28,7 @@
       const hammer = new Hammer(movable);
 
       this.getMovableItems();
+      this.hammer = hammer;
 
       hammer.get('pinch').set({enable: true});
 
@@ -40,8 +41,6 @@
       hammer.on('pinch', e => {
         this.activatedMovableItem.scale = this.originalScale * e.scale;
       });
-
-      this.hammer = hammer;
 
       movable.addEventListener('touchstart', this.touchStart);
     },

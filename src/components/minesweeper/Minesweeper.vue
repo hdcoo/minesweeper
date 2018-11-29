@@ -238,7 +238,7 @@
       onGridMouseup(x, y) {
         const grid = this.minesweeper.getGrid(x, y);
         if(grid.exposed && !this.longPressed) {
-          this.moveout() ? this.minesweeper.clearAllExpolring() : this.finishExplore(x, y)
+          this.moveout() ? this.minesweeper.clearAllExploring() : this.finishExplore(x, y)
         }
         !this.victory && !this.defeat && this.$emit('mouseup');
         clearTimeout(this.mousedownFlag);

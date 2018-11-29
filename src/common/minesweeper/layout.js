@@ -1,5 +1,7 @@
+import {exploreAroundGrids} from "./utils";
+
 function random() {
-  return Math.floor(Math.random() * 100)
+  return Math.floor(Math.random() * 1000)
 }
 
 function layMines(mines, options) {
@@ -37,17 +39,9 @@ function setMinesCount(mines, x, y) {
   if(mine.isMine) {
     return
   }
-  for(let i = -1;i < 2;i++) {
-    for(let j = -1;j < 2;j++) {
-      const _y = y + i;
-      const _x = x + j;
-      if(_y === y && _x === x) {
-        continue
-      }
-      const referenceMine = (mines[_y] || [])[_x] || {isMine: false};
-      referenceMine.isMine && (mine.minesCount += 1);
-    }
-  }
+  exploreAroundGrids(mines, x, y, (target, targetX, targetY) => {
+    mines[targetY][targetX].isMine && (mine.minesCount += 1);
+  })
 }
 
 function initMines(mines) {

@@ -3,6 +3,7 @@ import {TypeError} from "./error";
 import layout from "./layout";
 import {getExecutor} from "buttercam/utils";
 import EventEmitter from "butter-event-emitter";
+import {exploreAroundGrids} from "./utils";
 
 export default class Minesweeper extends EventEmitter {
   constructor(options) {
@@ -103,7 +104,7 @@ export default class Minesweeper extends EventEmitter {
     }
   }
   
-  clearAllExpolring() {
+  clearAllExploring() {
     Minesweeper.mapGrids(this.grids, grid => {
       grid.exploring = false
     })
@@ -125,17 +126,9 @@ export default class Minesweeper extends EventEmitter {
     grid.exposed = true
   }
   
-  static exploreAroundGrids(grids, x, y, callback) {
-    for(let i = -1;i < 2;i++) {
-      const row = grids[y + i];
-      if(!row) continue;
-      for(let j = -1;j < 2;j++) {
-        const target = row[x + j];
-        if(!target) continue;
-        getExecutor(callback)(target, x + j, y + i)
-      }
-    }
-  }
+  static exploreAroundGrids(...args) {
+    return exploreAroundGrids(...args)
+  };
   
   static mapGrids(grids, callback) {
     grids.forEach(row => {
