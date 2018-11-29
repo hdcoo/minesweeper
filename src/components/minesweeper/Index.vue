@@ -30,7 +30,7 @@
         </movable>
       </div>
     </section>
-    <section data-name="tool">
+    <section data-name="tool" v-if="isMobile">
       <div class="tool-wrapper">
         <action-button v-if="action === DIG"
                        @click="onActionClick"
@@ -60,6 +60,8 @@
     background: $main_color;
     @include helpers-full-size;
     @include flex-grow(1);
+    @include flexbox;
+    @include flex-direction(column);
 
     section[data-name=header] {
       height: $header_height;
@@ -68,6 +70,7 @@
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
       @include helpers-border-box;
+      @include flex(0, 0, auto);
 
       .header-wrapper {
         position: relative;
@@ -100,8 +103,10 @@
 
     section[data-name=minesweeper] {
       padding: 0 5px;
-      height: calc(100% - #{$header_height} - #{$tool_height});
       @include helpers-border-box;
+      @include flex-grow(1);
+      @include flexbox;
+      @include flex-direction(column);
 
       >div {
         border: 4px solid #fff;
@@ -112,15 +117,14 @@
         -webkit-overflow-scrolling: touch;
         @include helpers-full-size;
         @include helpers-border-box;
-        @include flexbox;
-        @include flex-align-items(center);
-        @include flex-justify-content(center);
+        @include flex-grow(1)
       }
     }
 
     section[data-name=tool] {
       height: $tool_height;
       @include helpers-border-box;
+      @include flex(0, 0, auto);
 
       .tool-wrapper {
         padding: .05rem 0;
@@ -154,6 +158,8 @@
 
   import Movable from "./Movable";
   import MovableItem from "./MovableItem";
+
+  import {isMobile} from "common/utils";
 
   const avatars = {
     smile: require('assets/smile.jpg'),
@@ -195,6 +201,7 @@
         action: DIG,
         remainingMines: this.minesCount,
         avatar: avatars.smile,
+        isMobile
       }
     },
     methods: {

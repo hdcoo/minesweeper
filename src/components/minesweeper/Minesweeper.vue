@@ -136,6 +136,7 @@
 <script>
   import Minesweeper from "common/minesweeper/index";
   import {forceClone} from "buttercam/utils";
+  import {isMobile} from "common/utils";
 
   export const DIG = 'DIG';
 
@@ -186,7 +187,7 @@
         marked: {},
         grids: [],
         minesweeper: null,
-        isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+        isMobile
       }
     },
     methods: {
