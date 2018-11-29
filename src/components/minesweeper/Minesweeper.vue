@@ -8,11 +8,12 @@
            v-for="(grid, x) in row"
            :style="gridStyle"
            :key="x"
-           @mousedown="onGridMousedown(x, y)"
-           @mouseup="onGridMouseup(x, y)"
-           @touchstart="onGridMousedown(x, y)"
-           @touchend="onGridMouseup(x, y)"
+           @mousedown="!isMobile && onGridMousedown(x, y)"
+           @mouseup="!isMobile && onGridMouseup(x, y)"
+           @touchstart="isMobile && onGridMousedown(x, y)"
+           @touchend="isMobile && onGridMouseup(x, y)"
            @click="onGridClick(x, y, grid)"
+           @mouseout="!isMobile && onGridMouseout"
       >
         <template v-if="!grid.exposed">
           <div class="explore" v-if="grid.exploring && !grid.marked"></div>
@@ -179,7 +180,8 @@
         isInitial: true,
         marked: {},
         grids: [],
-        minesweeper: null
+        minesweeper: null,
+        isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
       }
     },
     methods: {
@@ -194,6 +196,9 @@
           this.dig(x, y)
         }
       },
+      onGridMouseout() {
+        clearTimeout(this.mousedownFlag);
+      },
       onGridMousedown(x, y) {
         const grid = this.minesweeper.getGrid(x, y);
         if(grid.exposed) {
@@ -203,14 +208,16 @@
           this.$emit('mousedown')
         }
         this.longPressed = false;
-        this.mousedownFlag = setTimeout(() => {
-          this.longPressed = true;
-          if(this.action === DIG) {
-            this.mark(x, y)
-          } else {
-            this.dig(x, y)
-          }
-        }, 400)
+        if(!grid.exposed) {
+          this.mousedownFlag = setTimeout(() => {
+            this.longPressed = true;
+            if(this.action === DIG) {
+              this.mark(x, y)
+            } else {
+              this.dig(x, y)
+            }
+          }, 400)
+        }
       },
       onGridMouseup(x, y) {
         const grid = this.minesweeper.getGrid(x, y);
@@ -263,9 +270,12 @@
       },
       refresh() {
         this.isInitial = true;
+        this.marked = [];
+        this.minesweeper.markedCount = 0;
         this.initMinesweeper();
         this.assignGrids();
-      }
+        this.$emit('mark', 0)
+      },
     }
   }
 </script>
