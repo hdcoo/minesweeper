@@ -10,17 +10,25 @@
       </div>
     </section>
     <section data-name="minesweeper">
-      <div class="minesweeper-wrapper">
-        <minesweeper :debug="debug"
-                     :width="width"
-                     :height="height"
-                     :action="action"
-                     :mines-count="minesCount"
-                     @mark="mark"
-                     @mousedown="onMousedown"
-                     @mouseup="onMouseup"
-                     ref="minesweeper"
-        ></minesweeper>
+      <div>
+        <movable>
+          <movable-item>
+            <minesweeper :debug="debug"
+                         :width="width"
+                         :height="height"
+                         :action="action"
+                         :mines-count="minesCount"
+                         @mark="mark"
+                         @mousedown="onMousedown"
+                         @mouseup="onMouseup"
+                         ref="minesweeper"
+                         class="minesweeper"
+            ></minesweeper>
+          </movable-item>
+        </movable>
+        <!--<div class="minesweeper-wrapper">-->
+
+        <!--</div>-->
       </div>
     </section>
     <section data-name="tool">
@@ -96,14 +104,23 @@
       height: calc(100% - #{$header_height} - #{$tool_height});
       @include helpers-border-box;
 
-      .minesweeper-wrapper {
+      >div {
         border: 4px solid #fff;
         border-top: 0;
         border-left-color: $shadow_color;
         border-top-color: $shadow_color;
-        @include helpers-y-scroll;
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
         @include helpers-full-size;
         @include helpers-border-box;
+        @include flexbox;
+        @include flex-align-items(center);
+        @include flex-justify-content(center);
+      }
+
+      .minesweeper-wrapper {
+        /*margin: auto;*/
+        @include flex(0, 0, auto)
       }
     }
 
@@ -141,6 +158,9 @@
   import Minesweeper, {DIG, MARK} from "./Minesweeper";
   import ActionButton from "./ActionButton";
 
+  import Movable from "./Movable";
+  import MovableItem from "./MovableItem";
+
   const avatars = {
     smile: require('assets/smile.jpg'),
     surprise: require('assets/surprise.jpg')
@@ -150,7 +170,9 @@
     name: "MinesweeperController",
     components: {
       Minesweeper,
-      ActionButton
+      ActionButton,
+      Movable,
+      MovableItem
     },
     props: {
       width: {

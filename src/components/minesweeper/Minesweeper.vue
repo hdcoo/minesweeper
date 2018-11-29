@@ -205,19 +205,21 @@
         clearTimeout(this.mousedownFlag);
       },
       onGridMousedown(x, y, e) {
+        const {target} = e;
         const grid = this.minesweeper.getGrid(x, y);
+        const rect = target.getBoundingClientRect();
+
+        this.longPressed = false;
+        this.setCoordinate(e);
+
         if(grid.exposed) {
           this.explore(x, y)
         }
         if(grid.exposed || (!grid.marked && this.action === DIG)) {
           this.$emit('mousedown')
         }
-        this.longPressed = false;
-        this.setCoordinate(e);
         if(!grid.exposed) {
           this.mousedownFlag = setTimeout(() => {
-            const {target} = e;
-            const rect = target.getBoundingClientRect();
             if(
               this.clientX < rect.left ||
               this.clientX > rect.left + rect.width ||
