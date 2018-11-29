@@ -207,8 +207,8 @@
       onGridMousedown(x, y, e) {
         const {target} = e;
         const grid = this.minesweeper.getGrid(x, y);
-        const rect = target.getBoundingClientRect();
 
+        this.rect = target.getBoundingClientRect();
         this.longPressed = false;
         this.setCoordinate(e);
 
@@ -220,12 +220,7 @@
         }
         if(!grid.exposed) {
           this.mousedownFlag = setTimeout(() => {
-            if(
-              this.clientX < rect.left ||
-              this.clientX > rect.left + rect.width ||
-              this.clientY < rect.top ||
-              this.clientY > rect.top + rect.height
-            ) {
+            if(this.moveout()) {
               return
             }
             this.longPressed = true;
@@ -240,10 +235,11 @@
       onGridMouseup(x, y) {
         const grid = this.minesweeper.getGrid(x, y);
         if(grid.exposed && !this.longPressed) {
-          this.finishExplore(x, y)
+          this.moveout() ? this.minesweeper.clearAllExpolring() : this.finishExplore(x, y)
         }
         this.$emit('mouseup');
         clearTimeout(this.mousedownFlag);
+        this.assignGrids();
       },
       explore(x, y) {
         this.minesweeper.explore(x, y);
@@ -251,7 +247,6 @@
       },
       finishExplore(x, y) {
         this.minesweeper.finishExplore(x, y);
-        this.assignGrids()
       },
       mark(x, y) {
         const marked = this.minesweeper.mark(x, y);
@@ -299,6 +294,12 @@
         const {clientX, clientY} = touches ? touches[0] : e;
         this.clientX = clientX;
         this.clientY = clientY;
+      },
+      moveout() {
+        return this.clientX < this.rect.left ||
+          this.clientX > this.rect.left + this.rect.width ||
+          this.clientY < this.rect.top ||
+          this.clientY > this.rect.top + this.rect.height
       }
     }
   }

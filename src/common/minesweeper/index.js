@@ -95,6 +95,12 @@ export default class Minesweeper {
     }
   }
   
+  clearAllExpolring() {
+    Minesweeper.mapGrids(this.grids, grid => {
+      grid.exploring = false
+    })
+  }
+  
   static expose(grid) {
     grid.exposed = true
   }
@@ -106,8 +112,16 @@ export default class Minesweeper {
       for(let j = -1;j < 2;j++) {
         const target = row[x + j];
         if(!target) continue;
-        getExecutor(callback, this)(target, x + j, y + i)
+        getExecutor(callback)(target, x + j, y + i)
       }
     }
+  }
+  
+  static mapGrids(grids, callback) {
+    grids.forEach(row => {
+      row.forEach(grid => {
+        getExecutor(callback)(grid)
+      })
+    })
   }
 }
