@@ -21,6 +21,8 @@ export default class Minesweeper extends EventEmitter {
     
     this.minesCount = options.minesCount;
     
+    this.safeGridCount = options.width * options.height - options.minesCount;
+    
     this.grids = layout(options);
     
     this.markedCount = 0;
@@ -111,15 +113,13 @@ export default class Minesweeper extends EventEmitter {
   }
   
   winning() {
-    let correctMarks = 0;
-    let allMarks = 0;
+    let exposedCount = 0;
     Minesweeper.mapGrids(this.grids, grid => {
-      if(grid.marked) {
-        allMarks += 1;
-        grid.isMine && (correctMarks += 1)
+      if(grid.exposed && !grid.isMine) {
+        exposedCount += 1
       }
     });
-    return correctMarks === this.minesCount && allMarks === this.minesCount
+    return exposedCount === this.safeGridCount
   }
   
   static expose(grid) {
