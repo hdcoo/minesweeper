@@ -11,12 +11,13 @@
            v-for="(grid, x) in row"
            :style="gridStyle"
            :key="x"
-           @mousedown="!isMobile && onGridMousedown(x, y, $event)"
+           @mousedown.left="!isMobile && onGridMousedown(x, y, $event)"
            @mouseup="!isMobile && onGridMouseup(x, y, $event)"
            @touchstart="isMobile && onGridMousedown(x, y, $event)"
            @touchend="isMobile && onGridMouseup(x, y, $event)"
-           @click="onGridClick(x, y, grid)"
-           @mouseout="!isMobile && onGridMouseout()"
+           @click="isMobile && onGridClick(x, y, grid)"
+           @click.left="!isMobile && onLeftClick(x, y)"
+           @click.right="!isMobile && onRightClick(x, y)"
       >
         <template v-if="!grid.exposed">
           <div class="explore" v-if="grid.exploring && !grid.marked"></div>
@@ -205,8 +206,19 @@
           this.dig(x, y)
         }
       },
-      onGridMouseout() {
-        clearTimeout(this.mousedownFlag);
+      onLeftClick(x, y) {
+        const grid = this.minesweeper.getGrid(x, y);
+        if(grid.exposed || this.longPressed) {
+          return
+        }
+        this.dig(x, y)
+      },
+      onRightClick(x, y) {
+        const grid = this.minesweeper.getGrid(x, y);
+        if(grid.exposed || this.longPressed) {
+          return
+        }
+        this.mark(x, y)
       },
       onGridMousedown(x, y, e) {
         const {target} = e;
