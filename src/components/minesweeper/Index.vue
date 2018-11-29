@@ -21,6 +21,8 @@
                          @mark="mark"
                          @mousedown="onMousedown"
                          @mouseup="onMouseup"
+                         @winning="onWinning"
+                         @defeat="onDefeat"
                          ref="minesweeper"
                          class="minesweeper"
             ></minesweeper>
@@ -155,7 +157,9 @@
 
   const avatars = {
     smile: require('assets/smile.jpg'),
-    surprise: require('assets/surprise.jpg')
+    surprise: require('assets/surprise.jpg'),
+    cry: require('assets/cry.jpg'),
+    victory: require('assets/victory.jpg')
   };
 
   export default {
@@ -190,7 +194,7 @@
         MARK,
         action: DIG,
         remainingMines: this.minesCount,
-        avatar: avatars.smile
+        avatar: avatars.smile,
       }
     },
     methods: {
@@ -204,12 +208,19 @@
         const {minesweeper} = this.$refs;
         minesweeper.refresh();
         this.action = DIG;
+        this.avatar = avatars.smile;
       },
       onMousedown() {
         this.avatar = avatars.surprise
       },
       onMouseup() {
         this.avatar = avatars.smile
+      },
+      onWinning() {
+        this.avatar = avatars.victory;
+      },
+      onDefeat() {
+        this.avatar = avatars.cry
       }
     }
   }

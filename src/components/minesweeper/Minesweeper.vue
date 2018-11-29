@@ -1,5 +1,6 @@
 <template>
   <div data-namespace="minesweeper"
+       :style="{pointerEvents: victory || defeat ? 'none' : 'auto'}"
        @touchmove="onTouchmove"
   >
     <div class="row"
@@ -179,6 +180,8 @@
     },
     data() {
       return {
+        defeat: false,
+        victory: false,
         isInitial: true,
         marked: {},
         grids: [],
@@ -237,7 +240,7 @@
         if(grid.exposed && !this.longPressed) {
           this.moveout() ? this.minesweeper.clearAllExpolring() : this.finishExplore(x, y)
         }
-        this.$emit('mouseup');
+        !this.victory && !this.defeat && this.$emit('mouseup');
         clearTimeout(this.mousedownFlag);
         this.assignGrids();
       },
@@ -255,7 +258,7 @@
           marked ? this.marked[key] = true : delete this.marked[key];
         }
         this.assignGrids();
-        this.$emit('mark', this.minesweeper.markedCount)
+        this.$emit('mark', this.minesweeper.markedCount);
       },
       dig(x, y) {
         if(this.isInitial) {
@@ -267,7 +270,7 @@
           })
         }
         this.minesweeper.expose(x, y);
-        this.assignGrids()
+        this.assignGrids();
       },
       initMinesweeper(x, y) {
         this.minesweeper = new Minesweeper({
@@ -277,12 +280,26 @@
           height: this.height,
           minesCount: this.minesCount,
         });
+        this.minesweeper.on({
+          winning: () => {
+            this.$emit('winning');
+            this.victory = true;
+            this.minesweeper.exposeAllNotMines();
+            this.assignGrids();
+          },
+          defeat: () => {
+            this.$emit('defeat');
+            this.defeat = true;
+          }
+        })
       },
       assignGrids() {
         this.grids = forceClone(this.minesweeper.grids)
       },
       refresh() {
         this.isInitial = true;
+        this.victory = false;
+        this.defeat = false;
         this.marked = [];
         this.minesweeper.markedCount = 0;
         this.initMinesweeper();
@@ -300,7 +317,7 @@
           this.clientX > this.rect.left + this.rect.width ||
           this.clientY < this.rect.top ||
           this.clientY > this.rect.top + this.rect.height
-      }
+      },
     }
   }
 </script>

@@ -2,9 +2,12 @@ import validator from "./validators";
 import {TypeError} from "./error";
 import layout from "./layout";
 import {getExecutor} from "buttercam/utils";
+import EventEmitter from "butter-event-emitter";
 
-export default class Minesweeper {
+export default class Minesweeper extends EventEmitter {
   constructor(options) {
+    super();
+    
     const invalid = validator.forConstructor(options);
     
     if(invalid) {
@@ -32,23 +35,27 @@ export default class Minesweeper {
       return
     }
     if(grid.isMine) {
-      this.exposeAllMines()
+      this.exposeAllMines();
+      this.emit('defeat')
     } else {
       Minesweeper.expose(grid);
       if(grid.minesCount === 0) {
         this.spread(x, y)
       }
     }
-    return this
+    this.winning() && this.emit('winning')
   }
   
   exposeAllMines() {
-    this.grids.forEach(row => {
-      row.forEach(grid => {
-        grid.isMine && Minesweeper.expose(grid)
-      })
-    });
-    return this
+    Minesweeper.mapGrids(this.grids, grid => {
+      grid.isMine && Minesweeper.expose(grid)
+    })
+  }
+  
+  exposeAllNotMines() {
+    Minesweeper.mapGrids(this.grids, grid => {
+      !grid.isMine && Minesweeper.expose(grid)
+    })
   }
   
   spread(x, y) {
@@ -66,6 +73,7 @@ export default class Minesweeper {
     const grid = this.getGrid(x, y);
     grid.marked = !grid.marked;
     this.markedCount += grid.marked ? 1 : -1;
+    this.winning() && this.emit('winning');
     return grid.marked
   }
   
@@ -99,6 +107,18 @@ export default class Minesweeper {
     Minesweeper.mapGrids(this.grids, grid => {
       grid.exploring = false
     })
+  }
+  
+  winning() {
+    let correctMarks = 0;
+    let allMarks = 0;
+    Minesweeper.mapGrids(this.grids, grid => {
+      if(grid.marked) {
+        allMarks += 1;
+        grid.isMine && (correctMarks += 1)
+      }
+    });
+    return correctMarks === this.minesCount && allMarks === this.minesCount
   }
   
   static expose(grid) {
