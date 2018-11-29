@@ -1,5 +1,7 @@
 <template>
-  <div data-namespace="minesweeper">
+  <div data-namespace="minesweeper"
+       @touchmove="onTouchmove"
+  >
     <div class="row"
          v-for="(row, y) in grids"
          :key="y"
@@ -8,12 +10,12 @@
            v-for="(grid, x) in row"
            :style="gridStyle"
            :key="x"
-           @mousedown="!isMobile && onGridMousedown(x, y)"
-           @mouseup="!isMobile && onGridMouseup(x, y)"
-           @touchstart="isMobile && onGridMousedown(x, y)"
-           @touchend="isMobile && onGridMouseup(x, y)"
+           @mousedown="!isMobile && onGridMousedown(x, y, $event)"
+           @mouseup="!isMobile && onGridMouseup(x, y, $event)"
+           @touchstart="isMobile && onGridMousedown(x, y, $event)"
+           @touchend="isMobile && onGridMouseup(x, y, $event)"
            @click="onGridClick(x, y, grid)"
-           @mouseout="!isMobile && onGridMouseout"
+           @mouseout="!isMobile && onGridMouseout()"
       >
         <template v-if="!grid.exposed">
           <div class="explore" v-if="grid.exploring && !grid.marked"></div>
@@ -185,6 +187,9 @@
       }
     },
     methods: {
+      onTouchmove(e) {
+        this.setCoordinate(e)
+      },
       onGridClick(x, y) {
         const grid = this.minesweeper.getGrid(x, y);
         if(grid.exposed || this.longPressed) {
@@ -199,7 +204,7 @@
       onGridMouseout() {
         clearTimeout(this.mousedownFlag);
       },
-      onGridMousedown(x, y) {
+      onGridMousedown(x, y, e) {
         const grid = this.minesweeper.getGrid(x, y);
         if(grid.exposed) {
           this.explore(x, y)
@@ -208,8 +213,19 @@
           this.$emit('mousedown')
         }
         this.longPressed = false;
+        this.setCoordinate(e);
         if(!grid.exposed) {
           this.mousedownFlag = setTimeout(() => {
+            const {target} = e;
+            const rect = target.getBoundingClientRect();
+            if(
+              this.clientX < rect.left ||
+              this.clientX > rect.left + rect.width ||
+              this.clientY < rect.top ||
+              this.clientY > rect.top + rect.height
+            ) {
+              return
+            }
             this.longPressed = true;
             if(this.action === DIG) {
               this.mark(x, y)
@@ -276,6 +292,12 @@
         this.assignGrids();
         this.$emit('mark', 0)
       },
+      setCoordinate(e) {
+        const {touches} = e;
+        const {clientX, clientY} = touches ? touches[0] : e;
+        this.clientX = clientX;
+        this.clientY = clientY;
+      }
     }
   }
 </script>
