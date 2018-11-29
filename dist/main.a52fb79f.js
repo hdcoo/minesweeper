@@ -687,6 +687,7 @@ function (_EventEmitter) {
     _this.width = options.width;
     _this.height = options.height;
     _this.minesCount = options.minesCount;
+    _this.safeGridCount = options.width * options.height - options.minesCount;
     _this.grids = Object(_layout__WEBPACK_IMPORTED_MODULE_6__["default"])(options);
     _this.markedCount = 0;
     return _this;
@@ -804,15 +805,13 @@ function (_EventEmitter) {
   }, {
     key: "winning",
     value: function winning() {
-      var correctMarks = 0;
-      var allMarks = 0;
+      var exposedCount = 0;
       Minesweeper.mapGrids(this.grids, function (grid) {
-        if (grid.marked) {
-          allMarks += 1;
-          grid.isMine && (correctMarks += 1);
+        if (grid.exposed && !grid.isMine) {
+          exposedCount += 1;
         }
       });
-      return correctMarks === this.minesCount && allMarks === this.minesCount;
+      return exposedCount === this.safeGridCount;
     }
   }], [{
     key: "expose",
@@ -3292,6 +3291,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es6_number_constructor__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_number_constructor__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var common_minesweeper_index__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! common/minesweeper/index */ "/mVV");
 /* harmony import */ var buttercam_utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! buttercam/utils */ "dIFf");
+/* harmony import */ var common_utils__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! common/utils */ "kLkQ");
 
 
 
@@ -3443,6 +3443,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
+
 
 
 var DIG = 'DIG';
@@ -3492,7 +3494,7 @@ var MARK = 'MARK';
       marked: {},
       grids: [],
       minesweeper: null,
-      isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      isMobile: common_utils__WEBPACK_IMPORTED_MODULE_9__["isMobile"]
     };
   },
   methods: {
@@ -3512,8 +3514,23 @@ var MARK = 'MARK';
         this.dig(x, y);
       }
     },
-    onGridMouseout: function onGridMouseout() {
-      clearTimeout(this.mousedownFlag);
+    onLeftClick: function onLeftClick(x, y) {
+      var grid = this.minesweeper.getGrid(x, y);
+
+      if (grid.exposed || this.longPressed) {
+        return;
+      }
+
+      this.dig(x, y);
+    },
+    onRightClick: function onRightClick(x, y) {
+      var grid = this.minesweeper.getGrid(x, y);
+
+      if (grid.exposed || this.longPressed) {
+        return;
+      }
+
+      this.mark(x, y);
     },
     onGridMousedown: function onGridMousedown(x, y, e) {
       var _this = this;
@@ -3523,6 +3540,7 @@ var MARK = 'MARK';
       this.rect = target.getBoundingClientRect();
       this.longPressed = false;
       this.setCoordinate(e);
+      this.mousedownAt = new Date().getTime();
 
       if (grid.exposed) {
         this.explore(x, y);
@@ -3549,15 +3567,22 @@ var MARK = 'MARK';
       }
     },
     onGridMouseup: function onGridMouseup(x, y) {
+      var _this2 = this;
+
+      var remainingPressTime = 100 - (new Date().getTime() - this.mousedownAt);
       var grid = this.minesweeper.getGrid(x, y);
 
       if (grid.exposed && !this.longPressed) {
         this.moveout() ? this.minesweeper.clearAllExploring() : this.finishExplore(x, y);
       }
 
-      !this.victory && !this.defeat && this.$emit('mouseup');
+      clearTimeout(this.timeoutForMouseup);
       clearTimeout(this.mousedownFlag);
-      this.assignGrids();
+      this.timeoutForMouseup = setTimeout(function () {
+        !_this2.victory && !_this2.defeat && _this2.$emit('mouseup');
+
+        _this2.assignGrids();
+      }, Math.max(0, remainingPressTime));
     },
     explore: function explore(x, y) {
       this.minesweeper.explore(x, y);
@@ -3578,18 +3603,19 @@ var MARK = 'MARK';
       this.$emit('mark', this.minesweeper.markedCount);
     },
     dig: function dig(x, y) {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.isInitial) {
         this.initMinesweeper(x, y);
         this.isInitial = false;
+        this.$emit('start');
         Object.keys(this.marked).forEach(function (key) {
           var _key$split = key.split(':'),
               _key$split2 = _slicedToArray(_key$split, 2),
               x = _key$split2[0],
               y = _key$split2[1];
 
-          _this2.minesweeper.mark(x, y);
+          _this3.minesweeper.mark(x, y);
         });
       }
 
@@ -3597,7 +3623,7 @@ var MARK = 'MARK';
       this.assignGrids();
     },
     initMinesweeper: function initMinesweeper(x, y) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.minesweeper = new common_minesweeper_index__WEBPACK_IMPORTED_MODULE_7__["default"]({
         col: y,
@@ -3608,18 +3634,18 @@ var MARK = 'MARK';
       });
       this.minesweeper.on({
         winning: function winning() {
-          _this3.$emit('winning');
+          _this4.$emit('winning');
 
-          _this3.victory = true;
+          _this4.victory = true;
 
-          _this3.minesweeper.exposeAllNotMines();
+          _this4.minesweeper.exposeAllNotMines();
 
-          _this3.assignGrids();
+          _this4.assignGrids();
         },
         defeat: function defeat() {
-          _this3.$emit('defeat');
+          _this4.$emit('defeat');
 
-          _this3.defeat = true;
+          _this4.defeat = true;
         }
       });
     },
@@ -13649,7 +13675,7 @@ var render = function() {
         { staticClass: "header-wrapper" },
         [
           _c("div", { staticClass: "remaining-mines" }, [
-            _vm._v(_vm._s(_vm.remainingMines))
+            _vm._v(_vm._s(("" + _vm.remainingMines).padStart(3, "0")))
           ]),
           _vm._v(" "),
           _c("action-button", { on: { click: _vm.onRefreshClick } }, [
@@ -13659,7 +13685,9 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "time" })
+          _c("div", { staticClass: "time" }, [
+            _vm._v(_vm._s(("" + _vm.timing).padStart(3, "0")))
+          ])
         ],
         1
       )
@@ -13690,7 +13718,8 @@ var render = function() {
                       mousedown: _vm.onMousedown,
                       mouseup: _vm.onMouseup,
                       winning: _vm.onWinning,
-                      defeat: _vm.onDefeat
+                      defeat: _vm.onDefeat,
+                      start: _vm.onStart
                     }
                   })
                 ],
@@ -13704,22 +13733,24 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("section", { attrs: { "data-name": "tool" } }, [
-      _c(
-        "div",
-        { staticClass: "tool-wrapper" },
-        [
-          _vm.action === _vm.DIG
-            ? _c("action-button", { on: { click: _vm.onActionClick } }, [
-                _c("div", { staticClass: "action dig" })
-              ])
-            : _c("action-button", { on: { click: _vm.onActionClick } }, [
-                _c("div", { staticClass: "action mark" })
-              ])
-        ],
-        1
-      )
-    ])
+    _vm.isMobile
+      ? _c("section", { attrs: { "data-name": "tool" } }, [
+          _c(
+            "div",
+            { staticClass: "tool-wrapper" },
+            [
+              _vm.action === _vm.DIG
+                ? _c("action-button", { on: { click: _vm.onActionClick } }, [
+                    _c("div", { staticClass: "action dig" })
+                  ])
+                : _c("action-button", { on: { click: _vm.onActionClick } }, [
+                    _c("div", { staticClass: "action mark" })
+                  ])
+            ],
+            1
+          )
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -15016,6 +15047,18 @@ var render = function() {
               style: _vm.gridStyle,
               on: {
                 mousedown: function($event) {
+                  if (
+                    !("button" in $event) &&
+                    _vm._k($event.keyCode, "left", 37, $event.key, [
+                      "Left",
+                      "ArrowLeft"
+                    ])
+                  ) {
+                    return null
+                  }
+                  if ("button" in $event && $event.button !== 0) {
+                    return null
+                  }
                   !_vm.isMobile && _vm.onGridMousedown(x, y, $event)
                 },
                 mouseup: function($event) {
@@ -15027,11 +15070,28 @@ var render = function() {
                 touchend: function($event) {
                   _vm.isMobile && _vm.onGridMouseup(x, y, $event)
                 },
-                click: function($event) {
-                  _vm.onGridClick(x, y, grid)
-                },
-                mouseout: function($event) {
-                  !_vm.isMobile && _vm.onGridMouseout()
+                click: [
+                  function($event) {
+                    _vm.isMobile && _vm.onGridClick(x, y, grid)
+                  },
+                  function($event) {
+                    if (
+                      !("button" in $event) &&
+                      _vm._k($event.keyCode, "left", 37, $event.key, [
+                        "Left",
+                        "ArrowLeft"
+                      ])
+                    ) {
+                      return null
+                    }
+                    if ("button" in $event && $event.button !== 0) {
+                      return null
+                    }
+                    !_vm.isMobile && _vm.onLeftClick(x, y)
+                  }
+                ],
+                contextmenu: function($event) {
+                  !_vm.isMobile && _vm.onRightClick(x, y)
                 }
               }
             },
@@ -16794,6 +16854,20 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 
 /***/ }),
 
+/***/ "kLkQ":
+/*!*****************************!*\
+  !*** ./src/common/utils.js ***!
+  \*****************************/
+/*! exports provided: isMobile */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isMobile", function() { return isMobile; });
+var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+/***/ }),
+
 /***/ "ls82":
 /*!*****************************************************!*\
   !*** ./node_modules/regenerator-runtime/runtime.js ***!
@@ -18155,6 +18229,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ActionButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ActionButton */ "m0eq");
 /* harmony import */ var _Movable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Movable */ "K1a1");
 /* harmony import */ var _MovableItem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./MovableItem */ "+ft4");
+/* harmony import */ var common_utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! common/utils */ "kLkQ");
 
 //
 //
@@ -18306,6 +18381,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+
 
 
 
@@ -18348,7 +18429,9 @@ var avatars = {
       MARK: _Minesweeper__WEBPACK_IMPORTED_MODULE_1__["MARK"],
       action: _Minesweeper__WEBPACK_IMPORTED_MODULE_1__["DIG"],
       remainingMines: this.minesCount,
-      avatar: avatars.smile
+      avatar: avatars.smile,
+      isMobile: common_utils__WEBPACK_IMPORTED_MODULE_5__["isMobile"],
+      timing: 0
     };
   },
   methods: {
@@ -18361,6 +18444,8 @@ var avatars = {
     onRefreshClick: function onRefreshClick() {
       var minesweeper = this.$refs.minesweeper;
       minesweeper.refresh();
+      this.stopTiming();
+      this.timing = 0;
       this.action = _Minesweeper__WEBPACK_IMPORTED_MODULE_1__["DIG"];
       this.avatar = avatars.smile;
     },
@@ -18372,9 +18457,25 @@ var avatars = {
     },
     onWinning: function onWinning() {
       this.avatar = avatars.victory;
+      this.stopTiming();
     },
     onDefeat: function onDefeat() {
       this.avatar = avatars.cry;
+      this.stopTiming();
+    },
+    onStart: function onStart() {
+      var _this = this;
+
+      this.timingFlag = setInterval(function () {
+        if (_this.timing < 1000) {
+          _this.timing += 1;
+        } else {
+          _this.stopTiming();
+        }
+      }, 1000);
+    },
+    stopTiming: function stopTiming() {
+      clearInterval(this.timingFlag);
     }
   }
 });
@@ -21359,4 +21460,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 },[["tjUo","runtime"]]]);
-//# sourceMappingURL=main.93feba43.js.map
+//# sourceMappingURL=main.a52fb79f.js.map
