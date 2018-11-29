@@ -51,6 +51,7 @@
     "babel-loader": "^8.0.4",
     "butter-api": "^3.15.1",
     "butter-bridging": "^3.15.0",
+    "butter-event-emitter": "^3.17.0",
     "butter-html-webpack-inline-source-plugin": "^3.15.0",
     "butter-installation-detector": "^3.15.0",
     "butter-layouts": "^3.15.0",
