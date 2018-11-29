@@ -214,6 +214,7 @@
         this.rect = target.getBoundingClientRect();
         this.longPressed = false;
         this.setCoordinate(e);
+        this.mousedownAt = (new Date()).getTime();
 
         if(grid.exposed) {
           this.explore(x, y)
@@ -236,13 +237,17 @@
         }
       },
       onGridMouseup(x, y) {
+        const remainingPressTime = 100 - ((new Date()).getTime() - this.mousedownAt);
         const grid = this.minesweeper.getGrid(x, y);
         if(grid.exposed && !this.longPressed) {
           this.moveout() ? this.minesweeper.clearAllExploring() : this.finishExplore(x, y)
         }
-        !this.victory && !this.defeat && this.$emit('mouseup');
+        clearTimeout(this.timeoutForMouseup);
         clearTimeout(this.mousedownFlag);
-        this.assignGrids();
+        this.timeoutForMouseup = setTimeout(() => {
+          !this.victory && !this.defeat && this.$emit('mouseup');
+          this.assignGrids();
+        }, Math.max(0, remainingPressTime));
       },
       explore(x, y) {
         this.minesweeper.explore(x, y);
