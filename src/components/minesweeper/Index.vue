@@ -202,7 +202,8 @@
       },
       onRefreshClick() {
         const {minesweeper} = this.$refs;
-        minesweeper.refresh()
+        minesweeper.refresh();
+        this.action = DIG;
       },
       onMousedown() {
         this.avatar = avatars.surprise
