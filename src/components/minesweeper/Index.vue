@@ -2,11 +2,11 @@
   <div data-namespace="minesweeper-controller">
     <section data-name="header">
       <div class="header-wrapper">
-        <div class="remaining-mines">{{remainingMines}}</div>
+        <div class="remaining-mines">{{`${remainingMines}`.padStart(3, '0')}}</div>
         <action-button @click="onRefreshClick">
           <div class="avatar" :style="{backgroundImage: `url(${avatar})`}"></div>
         </action-button>
-        <div class="time"></div>
+        <div class="time">{{`${timing}`.padStart(3, '0')}}</div>
       </div>
     </section>
     <section data-name="minesweeper">
@@ -23,6 +23,7 @@
                          @mouseup="onMouseup"
                          @winning="onWinning"
                          @defeat="onDefeat"
+                         @start="onStart"
                          ref="minesweeper"
                          class="minesweeper"
             ></minesweeper>
@@ -201,7 +202,8 @@
         action: DIG,
         remainingMines: this.minesCount,
         avatar: avatars.smile,
-        isMobile
+        isMobile,
+        timing: 0
       }
     },
     methods: {
@@ -214,6 +216,8 @@
       onRefreshClick() {
         const {minesweeper} = this.$refs;
         minesweeper.refresh();
+        this.stopTiming();
+        this.timing = 0;
         this.action = DIG;
         this.avatar = avatars.smile;
       },
@@ -225,9 +229,23 @@
       },
       onWinning() {
         this.avatar = avatars.victory;
+        this.stopTiming();
       },
       onDefeat() {
-        this.avatar = avatars.cry
+        this.avatar = avatars.cry;
+        this.stopTiming();
+      },
+      onStart() {
+        this.timingFlag = setInterval(() => {
+          if(this.timing < 1000) {
+            this.timing += 1;
+          } else {
+            this.stopTiming()
+          }
+        }, 1000)
+      },
+      stopTiming() {
+        clearInterval(this.timingFlag)
       }
     }
   }

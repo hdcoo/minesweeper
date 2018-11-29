@@ -282,6 +282,7 @@
         if(this.isInitial) {
           this.initMinesweeper(x, y);
           this.isInitial = false;
+          this.$emit('start');
           Object.keys(this.marked).forEach(key => {
             const [x, y] = key.split(':');
             this.minesweeper.mark(x, y)
