@@ -1,20 +1,24 @@
 <template>
   <div id="app">
-    <minesweeper :debug="true"></minesweeper>
+    <minesweeper-controller></minesweeper-controller>
   </div>
 </template>
 
 <style lang="scss">
   @import "~butter-styles/base";
+
+  body, html, #app {
+    height: 100%;
+  }
 </style>
 
 <script>
-  import Minesweeper from "components/minesweeper";
+  import MinesweeperController from "components/minesweeper/Index.vue";
 
   export default {
     name: "App",
     components: {
-      Minesweeper
+      MinesweeperController
     },
   }
 </script>

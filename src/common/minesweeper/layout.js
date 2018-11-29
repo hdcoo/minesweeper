@@ -2,17 +2,6 @@ function random() {
   return Math.floor(Math.random() * 100)
 }
 
-function generateLayout(width, height) {
-  let mines = [];
-  for(let h = 0;h < height;h++) {
-    mines[h] = [];
-    for(let w = 0;w < width;w++) {
-      mines[h].push(Mine())
-    }
-  }
-  return mines
-}
-
 function layMines(mines, options) {
   const {
     col,
@@ -21,10 +10,16 @@ function layMines(mines, options) {
     height,
     minesCount,
   } = options;
+  if(minesCount <= 0) {
+    return
+  }
   for(let index = 0;;) {
     let x = random() % width;
     let y = random() % height;
-    if(x === row && y === col) {
+    if(
+      (x === row || x === row - 1 || x === row + 1) &&
+      (y === col || y === col - 1 || y === col + 1)
+    ) {
       continue
     }
     if(!mines[y][x].isMine) {
@@ -67,8 +62,21 @@ export function Mine() {
   return {
     isMine: false,
     exposed: false,
+    marked: false,
+    exploring: false,
     minesCount: 0
   }
+}
+
+export function generateLayout(width, height) {
+  let mines = [];
+  for(let h = 0;h < height;h++) {
+    mines[h] = [];
+    for(let w = 0;w < width;w++) {
+      mines[h].push(Mine())
+    }
+  }
+  return mines
 }
 
 /**

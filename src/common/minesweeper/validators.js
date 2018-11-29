@@ -28,7 +28,7 @@ export default {
       minesCount: {
         numericality: {
           strict: true,
-          greaterThan: 0,
+          greaterThan: -1,
           notGreaterThan: 'minesCount must greater than 0'
         },
         presence: {

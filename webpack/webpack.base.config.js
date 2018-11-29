@@ -36,7 +36,7 @@ module.exports = function () {
             {
               loader: "url-loader",
               options: {
-                limit: 4000,
+                limit: 5000,
                 name: "assets/[name].[ext]"
               }
             }
