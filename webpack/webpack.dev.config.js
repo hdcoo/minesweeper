@@ -4,7 +4,6 @@ const merge = require('webpack-merge');
 const BaseConfig = require('./webpack.base.config')();
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {srcDir} = require('../lib/utils');
-// const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 
 const ApiLevel = process.env.API_LEVEL || 'development';
 

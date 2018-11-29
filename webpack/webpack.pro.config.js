@@ -6,10 +6,8 @@ const {srcDir} = require('../lib/utils');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-// const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 const HtmlWebpackInlineSourcePlugin = require("butter-html-webpack-inline-source-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-// const PrerenderSPAPlugin = require('prerender-spa-plugin');
 const {assignValueWithEnv} = require('../lib/utils');
 
 const {NODE_ENV, API_LEVEL} = process.env;
@@ -22,7 +20,7 @@ module.exports = function() {
       entry: path.join(srcDir, 'index.js'),
       output: {
         path: path.join(__dirname, '../dist'),
-        publicPath: '//',
+        publicPath: '/minesweeper/dist',
         filename: '[name].[contenthash:8].js',
         chunkFilename: '[name].[contenthash:8].js'
       },
