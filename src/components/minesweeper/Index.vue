@@ -26,9 +26,6 @@
             ></minesweeper>
           </movable-item>
         </movable>
-        <!--<div class="minesweeper-wrapper">-->
-
-        <!--</div>-->
       </div>
     </section>
     <section data-name="tool">
@@ -116,11 +113,6 @@
         @include flexbox;
         @include flex-align-items(center);
         @include flex-justify-content(center);
-      }
-
-      .minesweeper-wrapper {
-        /*margin: auto;*/
-        @include flex(0, 0, auto)
       }
     }
 
