@@ -3,6 +3,7 @@
        :data-style-mode="isMobile ? 'mobile' : 'pc'"
        :style="{pointerEvents: victory || defeat ? 'none' : 'auto'}"
        @touchmove="onTouchmove"
+       @mousemove="onTouchmove"
   >
     <div class="row"
          v-for="(row, y) in grids"
@@ -12,7 +13,7 @@
            v-for="(grid, x) in row"
            :style="gridStyle"
            :key="x"
-           @mousedown.left="!isMobile && onGridMousedown(x, y, $event)"
+           @mousedown="!isMobile && onGridMousedown(x, y, $event)"
            @mouseup="!isMobile && onGridMouseup(x, y, $event)"
            @touchstart="isMobile && onGridMousedown(x, y, $event)"
            @touchend="isMobile && onGridMouseup(x, y, $event)"
@@ -281,8 +282,10 @@
       onGridMouseup(x, y) {
         const remainingPressTime = 100 - ((new Date()).getTime() - this.mousedownAt);
         const grid = this.minesweeper.getGrid(x, y);
-        if(grid.exposed && !this.longPressed) {
-          this.moveout() ? this.minesweeper.clearAllExploring() : this.finishExplore(x, y)
+        if(this.moveout()) {
+          this.minesweeper.clearAllExploring()
+        } else if(grid.exposed && !this.longPressed) {
+          this.finishExplore(x, y)
         }
         clearTimeout(this.timeoutForMouseup);
         clearTimeout(this.mousedownFlag);

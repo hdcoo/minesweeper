@@ -269,6 +269,9 @@
       Movable,
       MovableItem
     },
+    beforeDestroy() {
+      this.stopTiming()
+    },
     props: {
       width: {
         type: Number,
@@ -331,6 +334,7 @@
         this.stopTiming();
       },
       onStart() {
+        this.stopTiming();
         this.timingFlag = setInterval(() => {
           if(this.timing < 1000) {
             this.timing += 1;
