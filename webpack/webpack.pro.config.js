@@ -31,7 +31,7 @@ module.exports = function() {
           chunks(chunk) {
             return !/\w+\/fallback$/.test(chunk.name)
           },
-          minChunks: 2,
+          minChunks: 1,
           minSize: 1024 * 50,
           maxSize: 0,
           maxInitialRequests: 5,
