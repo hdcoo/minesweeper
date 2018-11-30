@@ -25,13 +25,13 @@
   }
 
   .normal {
-    border: .025rem solid #fff;
+    border: 3px solid #fff;
     border-right-color: $shadow_color;
     border-bottom-color: $shadow_color;
   }
 
   .activated {
-    border: .025rem solid #fff;
+    border: 3px solid #fff;
     border-left-color: $shadow_color;
     border-top-color: $shadow_color;
   }

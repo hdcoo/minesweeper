@@ -1,5 +1,6 @@
 <template>
   <div data-namespace="minesweeper"
+       :data-style-mode="isMobile ? 'mobile' : 'pc'"
        :style="{pointerEvents: victory || defeat ? 'none' : 'auto'}"
        @touchmove="onTouchmove"
   >
@@ -49,8 +50,6 @@
   @import "common";
 
   div[data-namespace=minesweeper] {
-    @include helpers-user-select(none);
-
     .row {
       @include flexbox;
     }
@@ -66,16 +65,6 @@
       @include helpers-border-box;
     }
 
-    .mine, .num, .empty, .explore {
-      border: .01rem solid $shadow_color;
-    }
-
-    .cover {
-      border: .025rem solid #fff;
-      border-right-color: $shadow_color;
-      border-bottom-color: $shadow_color;
-    }
-
     .marked {
       background-image: url(~assets/mark.jpg);
       @include helpers-background-config(80% auto, 50% 50%)
@@ -89,7 +78,6 @@
 
     .num {
       font-weight: bold;
-      font-size: .18rem;
       @include flexbox;
       @include flex-align-items(center);
       @include flex-justify-content(center);
@@ -132,12 +120,43 @@
       color: gray;
     }
   }
+
+  div[data-style-mode=pc] {
+    .mine, .num, .empty, .explore {
+      border: 1px solid $shadow_color;
+    }
+
+    .cover {
+      border: 2.5px solid #fff;
+      border-right-color: $shadow_color;
+      border-bottom-color: $shadow_color;
+    }
+
+    .num {
+      font-size: 18px;
+    }
+  }
+
+  div[data-style-mode=mobile] {
+    .mine, .num, .empty, .explore {
+      border: .01rem solid $shadow_color;
+    }
+
+    .cover {
+      border: .025rem solid #fff;
+      border-right-color: $shadow_color;
+      border-bottom-color: $shadow_color;
+    }
+
+    .num {
+      font-size: .18rem;
+    }
+  }
 </style>
 
 <script>
   import Minesweeper from "common/minesweeper/index";
   import {forceClone} from "buttercam/utils";
-  import {isMobile} from "common/utils";
 
   export const DIG = 'DIG';
 
@@ -165,6 +184,10 @@
       minesCount: {
         type: Number,
         default: 99
+      },
+      isMobile: {
+        type: Boolean,
+        default: false
       }
     },
     created() {
@@ -173,7 +196,13 @@
     },
     computed: {
       gridStyle() {
-        const percent = `${1 / 16 * 100}%`;
+        if(!this.isMobile) {
+          return {
+            width: '22px',
+            height: '22px'
+          }
+        }
+        const percent = `${1 / this.width * 100}%`;
         return {
           width: percent,
           paddingBottom: percent
@@ -188,7 +217,6 @@
         marked: {},
         grids: [],
         minesweeper: null,
-        isMobile
       }
     },
     methods: {
