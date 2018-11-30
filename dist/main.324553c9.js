@@ -3551,8 +3551,9 @@ var MARK = 'MARK';
 
       this.dig(x, y);
     },
-    onRightClick: function onRightClick(x, y) {
+    onRightClick: function onRightClick(x, y, e) {
       var grid = this.minesweeper.getGrid(x, y);
+      e.preventDefault();
 
       if (grid.exposed || this.longPressed) {
         return;
@@ -15173,7 +15174,7 @@ var render = function() {
                 },
                 click: [
                   function($event) {
-                    _vm.isMobile && _vm.onGridClick(x, y, grid)
+                    _vm.isMobile && _vm.onGridClick(x, y)
                   },
                   function($event) {
                     if (
@@ -15192,7 +15193,7 @@ var render = function() {
                   }
                 ],
                 contextmenu: function($event) {
-                  !_vm.isMobile && _vm.onRightClick(x, y)
+                  !_vm.isMobile && _vm.onRightClick(x, y, $event)
                 }
               }
             },
@@ -21672,4 +21673,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 },[["tjUo","runtime"]]]);
-//# sourceMappingURL=main.1f9d5494.js.map
+//# sourceMappingURL=main.324553c9.js.map
