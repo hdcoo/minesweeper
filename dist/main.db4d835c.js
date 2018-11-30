@@ -3463,6 +3463,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
+//
 
 
 var DIG = 'DIG';
@@ -3601,8 +3602,10 @@ var MARK = 'MARK';
       var remainingPressTime = 100 - (new Date().getTime() - this.mousedownAt);
       var grid = this.minesweeper.getGrid(x, y);
 
-      if (grid.exposed && !this.longPressed) {
-        this.moveout() ? this.minesweeper.clearAllExploring() : this.finishExplore(x, y);
+      if (this.moveout()) {
+        this.minesweeper.clearAllExploring();
+      } else if (grid.exposed && !this.longPressed) {
+        this.finishExplore(x, y);
       }
 
       clearTimeout(this.timeoutForMouseup);
@@ -15134,7 +15137,7 @@ var render = function() {
         "data-namespace": "minesweeper",
         "data-style-mode": _vm.isMobile ? "mobile" : "pc"
       },
-      on: { touchmove: _vm.onTouchmove }
+      on: { touchmove: _vm.onTouchmove, mousemove: _vm.onTouchmove }
     },
     _vm._l(_vm.grids, function(row, y) {
       return _c(
@@ -15149,18 +15152,6 @@ var render = function() {
               style: _vm.gridStyle,
               on: {
                 mousedown: function($event) {
-                  if (
-                    !("button" in $event) &&
-                    _vm._k($event.keyCode, "left", 37, $event.key, [
-                      "Left",
-                      "ArrowLeft"
-                    ])
-                  ) {
-                    return null
-                  }
-                  if ("button" in $event && $event.button !== 0) {
-                    return null
-                  }
                   !_vm.isMobile && _vm.onGridMousedown(x, y, $event)
                 },
                 mouseup: function($event) {
@@ -18615,6 +18606,9 @@ var avatars = {
     Movable: _Movable__WEBPACK_IMPORTED_MODULE_3__["default"],
     MovableItem: _MovableItem__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
+  beforeDestroy: function beforeDestroy() {
+    this.stopTiming();
+  },
   props: {
     width: {
       type: Number,
@@ -18679,6 +18673,7 @@ var avatars = {
     onStart: function onStart() {
       var _this = this;
 
+      this.stopTiming();
       this.timingFlag = setInterval(function () {
         if (_this.timing < 1000) {
           _this.timing += 1;
@@ -21673,4 +21668,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 },[["tjUo","runtime"]]]);
-//# sourceMappingURL=main.324553c9.js.map
+//# sourceMappingURL=main.db4d835c.js.map
