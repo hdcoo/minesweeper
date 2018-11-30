@@ -16,9 +16,9 @@
            @mouseup="!isMobile && onGridMouseup(x, y, $event)"
            @touchstart="isMobile && onGridMousedown(x, y, $event)"
            @touchend="isMobile && onGridMouseup(x, y, $event)"
-           @click="isMobile && onGridClick(x, y, grid)"
+           @click="isMobile && onGridClick(x, y)"
            @click.left="!isMobile && onLeftClick(x, y)"
-           @click.right="!isMobile && onRightClick(x, y)"
+           @click.right="!isMobile && onRightClick(x, y, $event)"
       >
         <template v-if="!grid.exposed">
           <div class="explore" v-if="grid.exploring && !grid.marked"></div>
@@ -241,8 +241,9 @@
         }
         this.dig(x, y)
       },
-      onRightClick(x, y) {
+      onRightClick(x, y, e) {
         const grid = this.minesweeper.getGrid(x, y);
+        e.preventDefault();
         if(grid.exposed || this.longPressed) {
           return
         }
