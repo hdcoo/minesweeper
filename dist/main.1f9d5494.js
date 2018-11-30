@@ -52,6 +52,24 @@ module.exports = document && document.documentElement;
 
 /***/ }),
 
+/***/ "/IDh":
+/*!****************************************************************!*\
+  !*** ./src/App.vue?vue&type=template&id=7ba5bd90&scoped=true& ***!
+  \****************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_template_id_7ba5bd90_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./App.vue?vue&type=template&id=7ba5bd90&scoped=true& */ "kg0J");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_template_id_7ba5bd90_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_template_id_7ba5bd90_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "/SS/":
 /*!*********************************************************************!*\
   !*** ./node_modules/core-js/modules/es6.object.set-prototype-of.js ***!
@@ -3180,24 +3198,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "IjTU":
-/*!****************************************************!*\
-  !*** ./src/App.vue?vue&type=template&id=7ba5bd90& ***!
-  \****************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_template_id_7ba5bd90___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../node_modules/vue-loader/lib??vue-loader-options!./App.vue?vue&type=template&id=7ba5bd90& */ "csA5");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_template_id_7ba5bd90___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_template_id_7ba5bd90___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
 /***/ "Iw71":
 /*!*****************************************************!*\
   !*** ./node_modules/core-js/modules/_dom-create.js ***!
@@ -3291,7 +3291,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es6_number_constructor__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es6_number_constructor__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var common_minesweeper_index__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! common/minesweeper/index */ "/mVV");
 /* harmony import */ var buttercam_utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! buttercam/utils */ "dIFf");
-/* harmony import */ var common_utils__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! common/utils */ "kLkQ");
 
 
 
@@ -3444,7 +3443,26 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 var DIG = 'DIG';
@@ -3471,6 +3489,10 @@ var MARK = 'MARK';
     minesCount: {
       type: Number,
       default: 99
+    },
+    isMobile: {
+      type: Boolean,
+      default: false
     }
   },
   created: function created() {
@@ -3479,7 +3501,14 @@ var MARK = 'MARK';
   },
   computed: {
     gridStyle: function gridStyle() {
-      var percent = "".concat(1 / 16 * 100, "%");
+      if (!this.isMobile) {
+        return {
+          width: '22px',
+          height: '22px'
+        };
+      }
+
+      var percent = "".concat(1 / this.width * 100, "%");
       return {
         width: percent,
         paddingBottom: percent
@@ -3493,8 +3522,7 @@ var MARK = 'MARK';
       isInitial: true,
       marked: {},
       grids: [],
-      minesweeper: null,
-      isMobile: common_utils__WEBPACK_IMPORTED_MODULE_9__["isMobile"]
+      minesweeper: null
     };
   },
   methods: {
@@ -12426,10 +12454,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _App_vue_vue_type_template_id_7ba5bd90___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./App.vue?vue&type=template&id=7ba5bd90& */ "IjTU");
+/* harmony import */ var _App_vue_vue_type_template_id_7ba5bd90_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./App.vue?vue&type=template&id=7ba5bd90&scoped=true& */ "/IDh");
 /* harmony import */ var _App_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./App.vue?vue&type=script&lang=js& */ "I77X");
 /* empty/unused harmony star reexport *//* harmony import */ var _App_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./App.vue?vue&type=style&index=0&lang=scss& */ "XAuw");
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "KHd+");
+/* harmony import */ var _App_vue_vue_type_style_index_1_id_7ba5bd90_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./App.vue?vue&type=style&index=1&id=7ba5bd90&lang=scss&scoped=true& */ "gN09");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "KHd+");
+
 
 
 
@@ -12438,13 +12468,13 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_4__["default"])(
   _App_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _App_vue_vue_type_template_id_7ba5bd90___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _App_vue_vue_type_template_id_7ba5bd90___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _App_vue_vue_type_template_id_7ba5bd90_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _App_vue_vue_type_template_id_7ba5bd90_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  null,
+  "7ba5bd90",
   null
   
 )
@@ -13091,6 +13121,17 @@ var store = global[SHARED] || (global[SHARED] = {});
 
 /***/ }),
 
+/***/ "Vh3J":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js!./node_modules/css-loader!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=style&index=1&id=7ba5bd90&lang=scss&scoped=true& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "XAuw":
 /*!*******************************************************!*\
   !*** ./src/App.vue?vue&type=style&index=0&lang=scss& ***!
@@ -13283,11 +13324,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "App",
   components: {
     MinesweeperController: components_minesweeper_Index_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    return {
+      isMobile: isMobile,
+      width: isMobile ? 16 : 30,
+      height: isMobile ? 30 : 16,
+      minesCount: 99
+    };
   }
 });
 
@@ -13668,90 +13736,120 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { "data-namespace": "minesweeper-controller" } }, [
-    _c("section", { attrs: { "data-name": "header" } }, [
-      _c(
-        "div",
-        { staticClass: "header-wrapper" },
-        [
-          _c("div", { staticClass: "remaining-mines" }, [
-            _vm._v(_vm._s(("" + _vm.remainingMines).padStart(3, "0")))
-          ]),
-          _vm._v(" "),
-          _c("action-button", { on: { click: _vm.onRefreshClick } }, [
-            _c("div", {
-              staticClass: "avatar",
-              style: { backgroundImage: "url(" + _vm.avatar + ")" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "time" }, [
-            _vm._v(_vm._s(("" + _vm.timing).padStart(3, "0")))
+  return _c(
+    "div",
+    {
+      attrs: {
+        "data-namespace": "minesweeper-controller",
+        "data-style-mode": _vm.isMobile ? "mobile" : "pc"
+      }
+    },
+    [
+      _c("section", { attrs: { "data-name": "header" } }, [
+        _c(
+          "div",
+          { staticClass: "header-wrapper" },
+          [
+            _c("div", { staticClass: "remaining-mines" }, [
+              _vm._v(_vm._s(("" + _vm.remainingMines).padStart(3, "0")))
+            ]),
+            _vm._v(" "),
+            _c("action-button", { on: { click: _vm.onRefreshClick } }, [
+              _c("div", {
+                staticClass: "avatar",
+                style: { backgroundImage: "url(" + _vm.avatar + ")" }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "time" }, [
+              _vm._v(_vm._s(("" + _vm.timing).padStart(3, "0")))
+            ])
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("section", { attrs: { "data-name": "minesweeper" } }, [
+        _c(
+          "div",
+          [
+            _vm.isMobile
+              ? _c(
+                  "movable",
+                  [
+                    _c(
+                      "movable-item",
+                      [
+                        _c("minesweeper", {
+                          ref: "minesweeper",
+                          staticClass: "minesweeper",
+                          attrs: {
+                            debug: _vm.debug,
+                            width: _vm.width,
+                            height: _vm.height,
+                            action: _vm.action,
+                            "mines-count": _vm.minesCount,
+                            "is-mobile": true
+                          },
+                          on: {
+                            mark: _vm.mark,
+                            mousedown: _vm.onMousedown,
+                            mouseup: _vm.onMouseup,
+                            winning: _vm.onWinning,
+                            defeat: _vm.onDefeat,
+                            start: _vm.onStart
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              : _c("minesweeper", {
+                  ref: "minesweeper",
+                  staticClass: "minesweeper",
+                  attrs: {
+                    debug: _vm.debug,
+                    width: _vm.width,
+                    height: _vm.height,
+                    action: _vm.action,
+                    "mines-count": _vm.minesCount
+                  },
+                  on: {
+                    mark: _vm.mark,
+                    mousedown: _vm.onMousedown,
+                    mouseup: _vm.onMouseup,
+                    winning: _vm.onWinning,
+                    defeat: _vm.onDefeat,
+                    start: _vm.onStart
+                  }
+                })
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _vm.isMobile
+        ? _c("section", { attrs: { "data-name": "tool" } }, [
+            _c(
+              "div",
+              { staticClass: "tool-wrapper" },
+              [
+                _vm.action === _vm.DIG
+                  ? _c("action-button", { on: { click: _vm.onActionClick } }, [
+                      _c("div", { staticClass: "action dig" })
+                    ])
+                  : _c("action-button", { on: { click: _vm.onActionClick } }, [
+                      _c("div", { staticClass: "action mark" })
+                    ])
+              ],
+              1
+            )
           ])
-        ],
-        1
-      )
-    ]),
-    _vm._v(" "),
-    _c("section", { attrs: { "data-name": "minesweeper" } }, [
-      _c(
-        "div",
-        [
-          _c(
-            "movable",
-            [
-              _c(
-                "movable-item",
-                [
-                  _c("minesweeper", {
-                    ref: "minesweeper",
-                    staticClass: "minesweeper",
-                    attrs: {
-                      debug: _vm.debug,
-                      width: _vm.width,
-                      height: _vm.height,
-                      action: _vm.action,
-                      "mines-count": _vm.minesCount
-                    },
-                    on: {
-                      mark: _vm.mark,
-                      mousedown: _vm.onMousedown,
-                      mouseup: _vm.onMouseup,
-                      winning: _vm.onWinning,
-                      defeat: _vm.onDefeat,
-                      start: _vm.onStart
-                    }
-                  })
-                ],
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      )
-    ]),
-    _vm._v(" "),
-    _vm.isMobile
-      ? _c("section", { attrs: { "data-name": "tool" } }, [
-          _c(
-            "div",
-            { staticClass: "tool-wrapper" },
-            [
-              _vm.action === _vm.DIG
-                ? _c("action-button", { on: { click: _vm.onActionClick } }, [
-                    _c("div", { staticClass: "action dig" })
-                  ])
-                : _c("action-button", { on: { click: _vm.onActionClick } }, [
-                    _c("div", { staticClass: "action mark" })
-                  ])
-            ],
-            1
-          )
-        ])
-      : _vm._e()
-  ])
+        : _vm._e()
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -15031,7 +15129,10 @@ var render = function() {
     "div",
     {
       style: { pointerEvents: _vm.victory || _vm.defeat ? "none" : "auto" },
-      attrs: { "data-namespace": "minesweeper" },
+      attrs: {
+        "data-namespace": "minesweeper",
+        "data-style-mode": _vm.isMobile ? "mobile" : "pc"
+      },
       on: { touchmove: _vm.onTouchmove }
     },
     _vm._l(_vm.grids, function(row, y) {
@@ -15198,30 +15299,6 @@ module.exports = function (it, S) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Movable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib!../../../node_modules/vue-loader/lib??vue-loader-options!./Movable.vue?vue&type=script&lang=js& */ "IbOX");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_node_modules_vue_loader_lib_index_js_vue_loader_options_Movable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "csA5":
-/*!**********************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=template&id=7ba5bd90& ***!
-  \**********************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: "app" } }, [_c("minesweeper-controller")], 1)
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
 
 /***/ }),
 
@@ -16314,6 +16391,22 @@ module.exports = function () {
 
 /***/ }),
 
+/***/ "gN09":
+/*!*******************************************************************************!*\
+  !*** ./src/App.vue?vue&type=style&index=1&id=7ba5bd90&lang=scss&scoped=true& ***!
+  \*******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_1_id_7ba5bd90_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../node_modules/mini-css-extract-plugin/dist/loader.js!../node_modules/css-loader!../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../node_modules/sass-loader/lib/loader.js!../node_modules/vue-loader/lib??vue-loader-options!./App.vue?vue&type=style&index=1&id=7ba5bd90&lang=scss&scoped=true& */ "Vh3J");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_1_id_7ba5bd90_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_1_id_7ba5bd90_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_1_id_7ba5bd90_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_1_id_7ba5bd90_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_mini_css_extract_plugin_dist_loader_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_sass_loader_lib_loader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_App_vue_vue_type_style_index_1_id_7ba5bd90_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
 /***/ "hPIQ":
 /*!****************************************************!*\
   !*** ./node_modules/core-js/modules/_iterators.js ***!
@@ -16854,17 +16947,41 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 
 /***/ }),
 
-/***/ "kLkQ":
-/*!*****************************!*\
-  !*** ./src/common/utils.js ***!
-  \*****************************/
-/*! exports provided: isMobile */
+/***/ "kg0J":
+/*!**********************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/App.vue?vue&type=template&id=7ba5bd90&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isMobile", function() { return isMobile; });
-var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { class: { pc: !_vm.isMobile }, attrs: { id: "app" } },
+    [
+      _c("minesweeper-controller", {
+        attrs: {
+          "is-mobile": _vm.isMobile,
+          width: _vm.width,
+          height: _vm.height,
+          "mines-count": _vm.minesCount
+        }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
 
 /***/ }),
 
@@ -18229,7 +18346,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ActionButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ActionButton */ "m0eq");
 /* harmony import */ var _Movable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Movable */ "K1a1");
 /* harmony import */ var _MovableItem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./MovableItem */ "+ft4");
-/* harmony import */ var common_utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! common/utils */ "kLkQ");
 
 //
 //
@@ -18386,7 +18502,100 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -18421,6 +18630,10 @@ var avatars = {
     debug: {
       type: Boolean,
       default: false
+    },
+    isMobile: {
+      type: Boolean,
+      default: false
     }
   },
   data: function data() {
@@ -18430,7 +18643,6 @@ var avatars = {
       action: _Minesweeper__WEBPACK_IMPORTED_MODULE_1__["DIG"],
       remainingMines: this.minesCount,
       avatar: avatars.smile,
-      isMobile: common_utils__WEBPACK_IMPORTED_MODULE_5__["isMobile"],
       timing: 0
     };
   },
@@ -21460,4 +21672,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 },[["tjUo","runtime"]]]);
-//# sourceMappingURL=main.a52fb79f.js.map
+//# sourceMappingURL=main.1f9d5494.js.map
